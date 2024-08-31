@@ -1,6 +1,8 @@
 # Triathlon Results
 
 This project displays triathlon race results fetched from an API, with additional features such as result sorting, error handling, and highlighting of fastest split times.
+<img width="1470" alt="Screen Shot 2024-08-31 at 8 29 18 PM" src="https://github.com/user-attachments/assets/92e2b367-9fd8-4e56-b595-04bf45df9694">
+
 
 ## Getting Started
 
