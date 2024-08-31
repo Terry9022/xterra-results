@@ -53,7 +53,7 @@ This project addresses the following requirements:
 
 ### Open-ended portion
 
-- Responsive design using Tailwind CSS for better viewing on various device sizes.
+- Using Tailwind CSS for better viewing.
 - Clear, easy-to-read table layout with alternating row colors for improved readability.
 - Custom Alert component for error messages.
 - Use of React hooks (useState, useEffect) for efficient state management and side effects.
