@@ -102,9 +102,9 @@ const ResultsTable = () => {
             placeholder="Search by name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md"
+            className="w-full px-4 py-2 border rounded-md pr-10"
           />
-          <Search className="absolute right-3 top-1/2  text-gray-400 hover:text-gray-600" />
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600" />
         </div>
         <table className="min-w-full bg-white">
           <thead className="bg-gray-100">
@@ -125,7 +125,7 @@ const ResultsTable = () => {
                   Loading and sorting results, please wait...
                 </td>
               </tr>
-            ) : filterResults.length === 0 ? (
+            ) : searchTerm.length === 0 ? (
               results.map((result, index) => (
                 <tr
                   key={index}
