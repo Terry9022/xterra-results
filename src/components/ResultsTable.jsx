@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Award } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Award, Search } from "lucide-react";
 
 // eslint-disable-next-line react/prop-types
 const Alert = ({ children }) => (
@@ -17,6 +17,7 @@ const ResultsTable = () => {
   const [error, setError] = useState(null);
   const [fastestTimes, setFastestTimes] = useState({});
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchResults();
@@ -81,6 +82,12 @@ const ResultsTable = () => {
     setFastestTimes(fastestSplits);
   };
 
+  const filterResults = useMemo(() => {
+    return results.filter((result) => {
+      return result.last_name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  }, [results, searchTerm]);
+
   if (error) {
     return <Alert>{error}. Please try refreshing the page.</Alert>;
   }
@@ -89,6 +96,16 @@ const ResultsTable = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Triathlon Results</h1>
       <div className="overflow-x-auto">
+        <div className="mb-4 relative">
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 border rounded-md"
+          />
+          <Search className="absolute right-3 top-1/2  text-gray-400 hover:text-gray-600" />
+        </div>
         <table className="min-w-full bg-white">
           <thead className="bg-gray-100">
             <tr>
@@ -108,8 +125,45 @@ const ResultsTable = () => {
                   Loading and sorting results, please wait...
                 </td>
               </tr>
-            ) : (
+            ) : filterResults.length === 0 ? (
               results.map((result, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                >
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{`${result.first_name} ${result.last_name}`}</td>
+                  <td className="px-4 py-2">{result.gender}</td>
+                  <td className="px-4 py-2">{result.division}</td>
+                  <td className="px-4 py-2">{result.nationality}</td>
+                  <td className="px-4 py-2">{result.total_time}</td>
+                  <td className="px-4 py-2">
+                    {fastestTimes.swim_time.athlete ===
+                      `${result.first_name} ${result.last_name}` && (
+                      <div className="flex items-center">
+                        <Award className="inline-block mr-1 text-blue-500" />
+                        <span className="text-blue-500">Fastest Swim</span>
+                      </div>
+                    )}
+                    {fastestTimes.bike_time.athlete ===
+                      `${result.first_name} ${result.last_name}` && (
+                      <div className="flex items-center">
+                        <Award className="inline-block mr-1 text-green-500" />
+                        <span className="text-green-500">Fastest Bike</span>
+                      </div>
+                    )}
+                    {fastestTimes.run_time.athlete ===
+                      `${result.first_name} ${result.last_name}` && (
+                      <div className="flex items-center">
+                        <Award className="inline-block mr-1 text-red-500" />
+                        <span className="text-red-500">Fastest Run</span>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              filterResults.map((result, index) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
